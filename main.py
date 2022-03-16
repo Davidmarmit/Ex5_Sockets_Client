@@ -6,8 +6,14 @@ server = ('169.254.242.78', 4444)
 try:
     c.connect(server)
 except ConnectionError:
-    print("Can't connect, check IP or Connection.")
-    sys.exit()
+    print("Can't connect, trying port 4445.")
+    server = ('169.254.242.78', 4445)
+    try:
+        c.connect(server)
+    except ConnectionError:
+        print("Can't connect. Port 4444 and 4445 are in use. Try again later.")
+        sys.exit()
+
 print("Send the number of the option you want: distance / ledon / ledoff / exit.")
 
 
@@ -20,9 +26,9 @@ while True:
             data = data.decode('utf-8')
             print("Distance from hc-sr04: " + data + "cms.")
         elif message == "ledon":
-            print("Led is on")
+            print("Led is on.")
         elif message == "ledoff":
-            print("Led is off")
+            print("Led is off.")
         elif message == "exit":
             print("System shutting down.")
             break
@@ -31,5 +37,3 @@ while True:
     except KeyboardInterrupt:
         c.close()
         sys.exit()
-
-
